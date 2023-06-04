@@ -19,9 +19,55 @@
     <br><br>
     <!-- <a href="/update_recipe/{{recipe.id}}">Update</a>
     <a href="/delete_recipe/{{recipe.id}}">Delete</a> -->
-    <button type="button" class="btn btn-lg" onclick="window.location.href='/update_recipe/{{recipe.id}}';">UPDATE</button>
-    <button type="button" class="btn btn-lg" onclick="window.location.href='/delete_recipe/{{recipe.id}}';">DELETE</button>
+    <button type="button" class="btn btn-lg" onclick="window.location.href='/recipe/{{recipe.id}}';">UPDATE</button>
+    <button type="button" class="btn btn-lg" onclick="deleteRecipe('{{recipe.id}}');">DELETE</button>
     <br><br>
 </div>
-
+<script>
+    function deleteRecipe(recipeId) {
+      fetch(`/recipe/${recipeId}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          // Recipe deleted successfully
+          // Remove the corresponding recipe element from the DOM
+          const recipeElement = document.getElementById(`recipe-${recipeId}`);
+          if (recipeElement) {
+            recipeElement.remove();
+          }
+          // Fetch and update the recipe list from the server
+          fetchRecipeList();
+        } else {
+          // Failed to delete recipe, handle the error case
+          // Display an error message or perform any other error handling
+          console.error('Failed to delete recipe');
+        }
+      })
+      .catch(error => {
+        // Error occurred during the delete request, handle the error
+        // Display an error message or perform any other error handling
+        console.error('Error occurred during delete request', error);
+      });
+    }
+    
+    function fetchRecipeList() {
+      fetch('/recipe-list')
+        .then(response => response.text())
+        .then(html => {
+          // Update the recipe list container with the fetched HTML content
+          const recipeListContainer = document.getElementById('recipe-list-container');
+          if (recipeListContainer) {
+            recipeListContainer.innerHTML = html;
+          }
+        })
+        .catch(error => {
+          // Error occurred during the fetch request, handle the error
+          // Display an error message or perform any other error handling
+          console.error('Error occurred during fetch request', error);
+        });
+    }
+    </script>
+    
+    
 {% endblock %}

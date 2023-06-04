@@ -55,9 +55,11 @@
                 </td>
                 <!-- <td><?php echo nl2br($recipe['method']); ?></td> -->
                 <td>
-                    <a href="/update_recipe/{{recipe.id}}">Update</a>
+                    <!-- <a href="/recipe/{{recipe.id}}">Update</a> -->
+                    <button type="button" class="btn btn-lg" onclick="window.location.href='/recipe/{{recipe.id}}';">UPDATE</button>
                     <br>
-                    <a href="/delete_recipe/{{recipe.id}}">Delete</a>
+                    <!-- <a href="/recipe/{{recipe.id}}">Delete</a> -->
+                    <button type="button" class="btn btn-lg" onclick="deleteRecipe('{{recipe.id}}');">DELETE</button>
                 </td>
             </tr>
         {% endfor %}
@@ -65,7 +67,35 @@
     {% endif %}
     
 </div>
+<script>
+  function deleteRecipe(recipeId) {
+  fetch(`/recipe/${recipeId}`, {
+    method: 'DELETE'
+  })
+  .then(response => {
+    if (response.ok) {
+      // Recipe deleted successfully
+      // Remove the corresponding recipe element from the DOM
+      const recipeElement = document.getElementById(`recipe-${recipeId}`);
+      if (recipeElement) {
+        recipeElement.remove();
+      }
+      // Reload the page to reflect the updated recipe list
+      window.location.reload();
+    } else {
+      // Failed to delete recipe, handle the error case
+      // Display an error message or perform any other error handling
+      console.error('Failed to delete recipe');
+    }
+  })
+  .catch(error => {
+    // Error occurred during the delete request, handle the error
+    // Display an error message or perform any other error handling
+    console.error('Error occurred during delete request', error);
+  });
+}
 
+</script>
 
-
+    
 {% endblock %}
