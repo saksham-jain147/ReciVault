@@ -6,6 +6,20 @@
 
 
 {% block body %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <div class="recivault" style="text-align: center">
     <h1>Welcome to ReciVault!</h1>
     Preserving Culinary Delights <br><br>
@@ -15,18 +29,36 @@
         <h4>There are currently no saved recipes. Add your's first one below!</h4>
         <button type="button" class="btn btn-lg" onclick="window.location.href='/recipes';">Add Recipe</button>
     {% else %}
-    <table border=2 style="margin-left:auto;margin-right:auto;">
+    <table border=2 style="margin-left:auto; margin-right:auto; background-color: rgba(0,0,0,0.7);">
         <tr>
             <th>Title</th>
             <th>Ingredients</th>
             <th>Instructions</th>
+            <th>Action</th>
         </tr>
         {% for recipe in recipes %}    
             <tr>
-                <td>{{ recipe.title }}</td>
-                <td>{{ recipe.ingredients }}</td>
-                <td>{{ recipe.method }}</td>
-                
+                <td style="vertical-align: top; text-align: left;"><b>{{ recipe.title }}</b></td>
+                <td style="vertical-align: top; text-align: left;">{{ recipe.ingredients | replace('\n', '<br> ') | safe }}</td>
+                <!-- <td style="vertical-align: top; text-align: left;">
+                    <ul>
+                      {% for line in recipe.ingredients.split('\n') %}
+                      <li>{{ line }}</li>
+                      {% endfor %}
+                    </ul>
+                  </td> -->
+                <!-- <td>{{ recipe.method }}</td> -->
+                <!-- <td>{{ recipe.method | safe }}</td> -->
+                <td style="vertical-align: top; text-align: left;">
+                    {{ recipe.method | replace('\n', '<br> ') | safe }} 
+                    <br> <br>
+                </td>
+                <!-- <td><?php echo nl2br($recipe['method']); ?></td> -->
+                <td>
+                    <a href="/update_recipe/{{recipe.id}}">Update</a>
+                    <br>
+                    <a href="/delete_recipe/{{recipe.id}}">Delete</a>
+                </td>
             </tr>
         {% endfor %}
     </table>

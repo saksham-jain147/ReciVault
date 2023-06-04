@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>ReciVault - Update Recipe</title>
+{% endblock %}
+
+{% block body %}
+<h1 class="recivault" style="text-align: center;">Update Recipe</h1>
+<form action="/update_recipe/{{recipe.id}}" method="POST" style="background-color: rgba(0,0,0,0.7); padding-left: 15%;">
+    <br>
+    <div class="form-group">
+      <label for="title" style="font-size: 30px;">Recipe Title</label>
+      <textarea class="form-control" id="title" name="title" rows="1" style="width: 80%;">{{recipe.title}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="ingredients" style="font-size: 25px;">Ingredients</label>
+        <textarea class="form-control" id="ingredients" name="ingredients" rows="3" style="width: 80%;">{{recipe.ingredients}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="instructions" style="font-size: 25px;">Instructions</label>
+        <textarea class="form-control" id="instructions" name="instructions" rows="7" style="width: 80%;">{{recipe.method}}</textarea>
+    </div>
+    <!-- <button type="button" class="btn btn-lg" onclick="window.location.href='/recipes';">Add Recipe</button> -->
+    <input type="submit" value="Update now!" style="height: 50px; width: 120px; background-color: chartreuse; font-weight: 1000;">
+    <br><br>
+</form>
+{% endblock %}
