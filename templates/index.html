@@ -6,9 +6,32 @@
 
 
 {% block body %}
-<div class="recivault" align="center">
+<div class="recivault" style="text-align: center">
     <h1>Welcome to ReciVault!</h1>
-    Preserving Culinary Delights
+    Preserving Culinary Delights <br><br>
+</div>
+<div class="saved_recipes" style="text-align: center">
+    {% if recipes|length < 1 %}
+        <h4>There are currently no saved recipes. Add your's first one below!</h4>
+        <button type="button" class="btn btn-lg" onclick="window.location.href='/recipes';">Add Recipe</button>
+    {% else %}
+    <table border=2 style="margin-left:auto;margin-right:auto;">
+        <tr>
+            <th>Title</th>
+            <th>Ingredients</th>
+            <th>Instructions</th>
+        </tr>
+        {% for recipe in recipes %}    
+            <tr>
+                <td>{{ recipe.title }}</td>
+                <td>{{ recipe.ingredients }}</td>
+                <td>{{ recipe.method }}</td>
+                
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    
 </div>
 
 
